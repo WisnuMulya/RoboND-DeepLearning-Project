@@ -108,6 +108,7 @@ I left the `steps_per_epoch`, `validation_steps`, and `workers` to be at default
 Since I was targeting the loss rate to be less than `0.0200`, the learning rate is suitable to me would be `1e-3` or equal to `0.001` since larger number would have a higher error saturation and smaller number would result in a longer training time. With this learning rate, I was able to train my neural network in a considerably faster time than `1e-4` and at lower epochs, while also have a more accurate model than larger learning rate like `1e-2` with the same training time, since larger learning rate saturates at a higher loss rate.
 
 Here's the training curve of my neural network:
+
 ![Neural network training curve][training-curve]
 
 ### 4. The student has a clear understanding and is able to identify the use of various techniques and concepts in network layers indicated by the write-up.
@@ -142,4 +143,18 @@ I have managed to achieve the final score of greater than 40%:
 
 ## Future Enhancements
 
-For future enhancements, larger epochs would be helpful to produce a more accurate segmentation. Also, a potential layer to be applied would be an inception layer that is discussed in the class, of which it's suggested that it would provide a better result.
+While the classification of hero when in close proximity is already good, better classification of other people and hero when far away would be helpful, since currently it's doing a poor job:
+
+### Hero close proximity
+
+![Hero segmentation image when close][hero]
+
+### Other people segmentation
+
+![Other people segmentation image][other-people]
+
+### Hero far away
+
+![Hero segmentation image when in far away][hero-far]
+
+Other improvements might be larger epochs to produce a more accurate segmentation. Also, a potential layer to be applied would be an inception layer that is discussed in the class, of which it's suggested that it would provide a better result.
