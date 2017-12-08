@@ -119,15 +119,21 @@ Fully connected layer could be applied in a regular convolutional network and fo
 
 ### 5. The student has a clear understanding of image manipulation in the context of the project indicated by the write-up.
 
-The image manipulation conducted by the neural network is to produce a segmented image on which there are three types of classifications: hero, other people, and background. The type of neural network for this job is the fully convolutional networks, since it preserves the spatial information throughout the network and also output the image with the same size as the output. On the contrary, regular convolutional network only specify what class is in the image without producing an image showing where are certain classes located in the image.
+In this project, I need to obtain a semantically segmented output from the input images that are feed into the neural network. To do this, I need to use a fully convolutional networks rather than the regular convolutional network, since regular convolutional networks produces only a probability distribution of classes in the images. On the other hand, fully convolutional networks would produce an image with the same size as its input and contain semantic segmentation of the input.
 
-Fully convolutional network consists of two parts: encoding and decoding. The encoding part works the same like the regular convolutional network, while the decoding part works to upscale the image to return the same size image as the input. Both of the part is connected with a 1x1 convolutional layer, rather than a fully connected layer, since it preserves spatial information.
+Fully convolutional network could also be used for various purposes, such as image reconstruction (constructing the loss part of an image), image colorization, and generating higher resolution images. Obtaining a fully convolutional network could be done by replacing the fully connected layer of a regular convolution networks with series of convolutional layers. This series of convolutional layers would act as a decoding part of the network, of which it will reconstruct the compressed input image to produce a semantically segmented image with the same size as its input. Meanwhile, the compressed input image is the result of the previous convolutional layers which is called the encoding part or the network. It takes the input image and produces multilayer smaller compressed images.
+
+The way the decoding part of the network reconstruct the input image is by a series of upsampling, skip connection, and also a learnable convolutions. The upsampling part of a decoder block in this project is using a bilinear upsampling, of which it upscales an input image to twice the size and filling the missing pixels with weighted average of the pixels around it. Then, the skip connection takes part in increasing the resolution of the output by getting the activation from previous layers and then interpolate them together. This is needed since the network has an issue of low resolution semantic segmentation image, since the activation were downscaled on deep layers.
+
+Another solution of this low resolution is by using a deconvnet as mentioned in this webpage: [https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/image_segmentation.html](https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/image_segmentation.html). This network is basically has the decoding part to be the reverse of the encoding part and the use of it might produce a better result rather than using the fully convolutional networks. It also performs better than fully convolutional networks in classifying small objects in the image. However, this network needs a heavy training and the training consists of two steps: single objects centered and fine-tuning with difficult examples.
 
 ### 6. The student displays a solid understanding of the limitations to the neural network with the given data chosen for various follow-me scenarios which are conveyed in the write-up.
 
 With the given data, the neural network is only good to follow the hero class and when the hero is in a close proximity. This is justified with the evaluation score on which the IoU of hero in close proximity is 0.9124, while the IoU of hero far away is 0.2255. The IoU of other people is also poor, for which the highest is 0.7503.
 
 For objects other than humans, the current network will not be able to follow them, since it's lack in classifiers of them and the data is not supportive enough to include a better representation of other objects like cars or animals.
+
+What needs to be done to fix those issues would be to obtain more data for hero from far away and also train the model with more epochs to get a better model to recognize other people. Further, for detecting other objects, I need to provide more data for those objects and also the masks for training the network, so that it would recognize those other objects.
 
 ## Model
 
@@ -157,4 +163,6 @@ While the classification of hero when in close proximity is already good, better
 
 ![Hero segmentation image when in far away][hero-far]
 
-Other improvements might be larger epochs to produce a more accurate segmentation. Also, a potential layer to be applied would be an inception layer that is discussed in the class, of which it's suggested that it would provide a better result.
+This downfall might be fixed by training the model with larger epochs and collect more data of which there are hero when far away.
+
+Also, a potential layer to be applied would be an inception layer that is discussed in the class, of which it's suggested that it would provide a better result.
